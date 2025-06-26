@@ -26,7 +26,7 @@ class PublishNewsTask {
         }
 
         task();
-        const intervalTaskId = setInterval(task, 1 * 60 *1000 /**1 mins */);
+        const intervalTaskId = setInterval(task, 2 * 60 *1000 /**2 mins */);
 
         this.taskId = intervalTaskId;
     }
