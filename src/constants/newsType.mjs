@@ -10,6 +10,6 @@
  *  - science
  *  - health
  */
-const NEWS_TYPES = ['business', 'technology', 'science', 'world'];
+const NEWS_TYPES = ['general','business', 'science', 'world'];
 
 export { NEWS_TYPES };
