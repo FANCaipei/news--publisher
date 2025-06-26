@@ -14,6 +14,9 @@ class FetchNewsTask {
         const task = async () => {
             getTopNews(NEWS_TYPES[this.currentNewsTypeIndex]).then((data) => {
                     console.log('news: ', data);
+                    if(!data?.articles?.length){
+                        return;
+                    }
 
                     DBManager.saveNews(data.articles?.map(item => {
                         return {

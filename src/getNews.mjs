@@ -6,13 +6,18 @@ const agent = new HttpsProxyAgent('http://localhost:8001');
 const API_KEY = 'c2ef648b6eacc1574da65f402df4f563';
 
 // api doc https://gnews.io/docs/v4#top-headlines-endpoint
-const Axios = axios.create({
+const axiosConfig = {
     baseURL: 'https://gnews.io/api',
-    httpsAgent: agent,
     params: {
         apikey: API_KEY,
     }
-})
+}
+console.log('process.env.WITH_LOCAL_PROXY: ', process.env.WITH_LOCAL_PROXY, process.env.WITH_LOCAL_PROXY === 'True');
+if(process.env.WITH_LOCAL_PROXY === 'True'){
+    axiosConfig.httpsAgent = agent;
+}
+
+const Axios = axios.create(axiosConfig)
 
 /**
  * 

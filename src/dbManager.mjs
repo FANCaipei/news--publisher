@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const dbToken = 'RwMPNgGFxYPz7uAGXZ4zcfPa1nzWtWHkYVQ5_Gzm';
+const dbToken = process.env.DB_TOKEN;
+const newsTableId = process.env.NEWS_TABLE_ID;
+const weiboCookieTableId = process.env.WEIBO_COOKIE_TABLE_ID;
 
 const AxiosClient = axios.create({
     baseURL: 'http://localhost:8080/api/v2',
@@ -24,21 +26,10 @@ class DBManager {
         }
      */
     static saveNews = async (news) => {
-        // news?.forEach((item) => {
-        //     AxiosClient.post('/tables/mupgt2edzfgbrot/records', {
-        //         title: item.title,
-        //         description: item.description,
-        //         content: item.content,
-        //         image: item.image,
-        //         url: item.url,
-        //         timestamp: item.timestamp,
-        //         published: item.published ? 'true':'false',
-        //     })
-        // });
         if(news?.length <= 0){
             return;
         }
-        AxiosClient.post('/tables/mupgt2edzfgbrot/records', news.map(item => {
+        AxiosClient.post(`/tables/${newsTableId}/records`, news.map(item => {
             return {
                 title: item.title,
                 description: item.description,
@@ -53,10 +44,10 @@ class DBManager {
     }
 
     static getLatestUnpublishedNews = async (type='general') => {
-        return AxiosClient.get('/tables/mupgt2edzfgbrot/records', {
+        return AxiosClient.get(`/tables/${newsTableId}/records`, {
             params: {
                 where: `(published,eq,false)~and(type,eq,${type})`, 
-                viewId: 'vwntuqoia6tcnwy7',
+                // viewId: 'vwntuqoia6tcnwy7',
                 sort: '-timestamp',
                 limit: 5,
             }
@@ -66,7 +57,7 @@ class DBManager {
     }
 
     static setNewsPublished = async (id, published) => {
-        return AxiosClient.patch(`/tables/mupgt2edzfgbrot/records`, {
+        return AxiosClient.patch(`/tables/${newsTableId}/records`, {
             Id: id,
             published: published? 'true':'false',
         });
@@ -80,10 +71,10 @@ class DBManager {
         const currentTimestamp = new Date().getTime();
         const outdateTimestamp = currentTimestamp - 24 * 60 * 60 * 1000;
 
-        const resp = await AxiosClient.get('/tables/mupgt2edzfgbrot/records', {
+        const resp = await AxiosClient.get(`/tables/${newsTableId}/records`, {
             params: {
                 where: `(timestamp,lt,${outdateTimestamp})`, 
-                viewId: 'vwntuqoia6tcnwy7',
+                // viewId: 'vwntuqoia6tcnwy7',
                 limit: 10000,
             }
         })
@@ -94,16 +85,16 @@ class DBManager {
             }
         }) ?? [];
 
-        return AxiosClient.delete('/tables/mupgt2edzfgbrot/records', {
+        return AxiosClient.delete(`/tables/${newsTableId}/records`, {
             data: deleteIds
         })
     }
 
     static getWeiboToken = async () => {
-        return AxiosClient.get('/tables/mrc3u0ys1mj9v79/records', {
-            params: {
-                viewId: 'vwxdyg8jwckvj1kl',
-            }
+        return AxiosClient.get(`/tables/${weiboCookieTableId}/records`, {
+            // params: {
+            //     viewId: 'vwxdyg8jwckvj1kl',
+            // }
         }).then(resp => {
             return resp.data?.list?.[0]?.cookie;
         })

@@ -12,7 +12,7 @@ class PublishNewsTask {
             return;
         }
         const task = async () => {
-            console.log('currentNewsTypeIndex: ', NEWS_TYPES[this.currentNewsTypeIndex]);
+            // console.log('currentNewsTypeIndex: ', NEWS_TYPES[this.currentNewsTypeIndex]);
             DBManager.getLatestUnpublishedNews(NEWS_TYPES[this.currentNewsTypeIndex]).then((data) => {
                 const news = data?.list?.[0];
                 console.log('news: ', data?.list);
@@ -26,7 +26,7 @@ class PublishNewsTask {
         }
 
         task();
-        const intervalTaskId = setInterval(task, 5 * 60 *1000 /**5 mins */);
+        const intervalTaskId = setInterval(task, 1 * 60 *1000 /**1 mins */);
 
         this.taskId = intervalTaskId;
     }
