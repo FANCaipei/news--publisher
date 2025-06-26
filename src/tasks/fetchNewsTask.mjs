@@ -41,7 +41,7 @@ class FetchNewsTask {
         }
 
         task();
-        const intervalTaskId = setInterval(task, 60 * 60 *1000 /**1 hour */);
+        const intervalTaskId = setInterval(task, 2 * 60 * 60 * 1000 /**2 hours */);
 
         this.taskId = intervalTaskId;
     }

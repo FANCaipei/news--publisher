@@ -29,18 +29,26 @@ class DBManager {
         if(news?.length <= 0){
             return;
         }
-        AxiosClient.post(`/tables/${newsTableId}/records`, news.map(item => {
-            return {
-                title: item.title,
-                description: item.description,
-                content: item.content,
-                image: item.image,
-                url: item.url,
-                timestamp: item.timestamp,
-                type: item.type,
-                published: item.published ? 'true':'false',
+        news?.forEach(async (item) => {
+            const resp = await AxiosClient.get(`/tables/${newsTableId}/records`, {
+                params: {
+                    where: `(title,eq,${item.title})`,
+                    limit: 5,
+                }
+            });
+            if(!resp.data?.list?.length){
+                AxiosClient.post(`/tables/${newsTableId}/records`, {
+                    title: item.title,
+                    description: item.description,
+                    content: item.content,
+                    image: item.image,
+                    url: item.url,
+                    timestamp: item.timestamp,
+                    type: item.type,
+                    published: item.published ? 'true':'false',
+                });
             }
-        }));
+        });
     }
 
     static getLatestUnpublishedNews = async (type='general') => {
