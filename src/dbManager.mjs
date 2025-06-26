@@ -56,11 +56,30 @@ class DBManager {
         })
     }
 
-    static setNewsPublished = async (id, published) => {
+    static setNewsPublished = async (id) => {
         return AxiosClient.patch(`/tables/${newsTableId}/records`, {
             Id: id,
-            published: published? 'true':'false',
+            published: 'true',
         });
+    }
+
+    static setNewsPublishedWithTitle = async (title) => {
+        const resp = await AxiosClient.get(`/tables/${newsTableId}/records`, {
+            params: {
+                where: `(title,eq,${title})`, 
+                // viewId: 'vwntuqoia6tcnwy7',
+                limit: 10000,
+            }
+        })
+
+        const updateRows = resp.data?.list?.map(item => {
+            return {
+                Id: item.Id,
+                published: 'true',
+            }
+        }) ?? [];
+
+        return AxiosClient.patch(`/tables/${newsTableId}/records`, updateRows);
     }
 
     /**

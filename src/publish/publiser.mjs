@@ -18,7 +18,8 @@ import {weiboPublish} from "./weiboPublisher.mjs"
 const publish = (news) => {
     weiboPublish(news.title, news.content, news.url);
     // update published status
-    DBManager.setNewsPublished(news.Id, true);
+    // DBManager.setNewsPublished(news.Id);
+    DBManager.setNewsPublishedWithTitle(news.title);
 }
 
 export { publish };

@@ -32,3 +32,4 @@ const type = 'business';
 
 // DBManager.cleanOutdatedNews();
 // PublishNewsTask.startTask();
+// DBManager.setNewsPublishedWithTitle('Robotaxi只上路了10辆，马斯克身家微涨1000亿-36氪');

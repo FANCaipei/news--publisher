@@ -12,7 +12,7 @@ const axiosConfig = {
         apikey: API_KEY,
     }
 }
-console.log('process.env.WITH_LOCAL_PROXY: ', process.env.WITH_LOCAL_PROXY, process.env.WITH_LOCAL_PROXY === 'True');
+// console.log('process.env.WITH_LOCAL_PROXY: ', process.env.WITH_LOCAL_PROXY, process.env.WITH_LOCAL_PROXY === 'True');
 if(process.env.WITH_LOCAL_PROXY === 'True'){
     axiosConfig.httpsAgent = agent;
 }
