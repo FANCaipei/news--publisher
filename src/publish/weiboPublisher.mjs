@@ -9,7 +9,8 @@ async function weiboPublish(title, content, url) {
         return;
     }
     weiboPost.setCookie(cookie);
-    weiboPost.post(`${title}\n${content}\n${url}`);
+    const publishContent = content?.startsWith(title) ? `${content}\n${url}` : `${title}\n${content}\n${url}`;
+    weiboPost.post(publishContent);
 }
 
 export {weiboPublish}
